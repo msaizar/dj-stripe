@@ -538,7 +538,6 @@ class Customer(StripeObject):
         """
         resp = cu.update_subscription(
             plan=PAYMENTS_PLANS[plan]["stripe_plan_id"],
-            prorate=False,
             quantity=quantity
         )
 
