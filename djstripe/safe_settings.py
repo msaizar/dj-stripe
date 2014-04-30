@@ -20,8 +20,8 @@ PAYMENTS_PLANS = getattr(settings, "DJSTRIPE_PLANS", {})
 PAYMENT_PLANS = OrderedDict(sorted(PAYMENTS_PLANS.items(), key=lambda t: t[1]['price']))
 
 PLAN_CHOICES = [
-    (plan, PAYMENTS_PLANS[plan].get("name", plan))
-    for plan in PAYMENTS_PLANS
+    (plan, PAYMENT_PLANS[plan].get("name", plan))
+    for plan in PAYMENT_PLANS
 ]
 PASSWORD_INPUT_RENDER_VALUE = getattr(
     settings, 'DJSTRIPE_PASSWORD_INPUT_RENDER_VALUE', False)
