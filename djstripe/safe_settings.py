@@ -1,5 +1,12 @@
 from __future__ import unicode_literals
 
+try:
+    # For Python 2.7 and Python 3.x users
+    from collections import OrderedDict
+except ImportError:
+    # For Python 2.6 users
+    from ordereddict import OrderedDict
+
 from django.conf import settings
 
 
@@ -10,6 +17,8 @@ INVOICE_FROM_EMAIL = getattr(
     "billing@example.com"
 )
 PAYMENTS_PLANS = getattr(settings, "DJSTRIPE_PLANS", {})
+PAYMENT_PLANS = OrderedDict(sorted(PAYMENTS_PLANS.items(), key=lambda t: t[1]['price']))
+
 PLAN_CHOICES = [
     (plan, PAYMENTS_PLANS[plan].get("name", plan))
     for plan in PAYMENTS_PLANS
