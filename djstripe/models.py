@@ -532,29 +532,16 @@ class Customer(StripeObject):
                   charge_immediately=True):
         cu = self.stripe_customer
         """
-        Trial_days corresponds to the value specified by the selected plan
-        for the key trial_period_days.
-        """
-        if ("trial_period_days" in PAYMENTS_PLANS[plan]):
-            trial_days = PAYMENTS_PLANS[plan]["trial_period_days"]
-        """
         The subscription is defined with prorate=False to make the subscription
         end behavior of Change plan consistent with the one of Cancel subscription (which is
         defined with at_period_end=True).
         """
-        if trial_days:
-            resp = cu.update_subscription(
-                plan=PAYMENTS_PLANS[plan]["stripe_plan_id"],
-                trial_end=timezone.now() + datetime.timedelta(days=trial_days),
-                prorate=False,
-                quantity=quantity
-            )
-        else:
-            resp = cu.update_subscription(
-                plan=PAYMENTS_PLANS[plan]["stripe_plan_id"],
-                prorate=False,
-                quantity=quantity
-            )
+        resp = cu.update_subscription(
+            plan=PAYMENTS_PLANS[plan]["stripe_plan_id"],
+            prorate=False,
+            quantity=quantity
+        )
+
         self.sync_current_subscription()
         if charge_immediately:
             self.send_invoice()
